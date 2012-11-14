@@ -1,0 +1,147 @@
+<!--
+This piece of software is open-source!!  
+Feel free to modify and re-distribute.
+Fork us at https://github.com/vivganes/html-test-bench
+-->
+
+<!--
+====================================================================
+                    USER DOCUMENTATION
+====================================================================
+
+Please run this file in the browser of your choice.  You will find the instructions there.
+
+
+-->
+
+
+<!--
+====================================================================
+                    DEVELOPER DOCUMENTATION
+====================================================================
+This software is basically a HTML page in itself, which includes JavaScript code.
+
+Some important HTML elements in this page are:
+
+(1) Input Text Area (Multi-line)
+	id - htmlCode
+	Description - This is the text area in which the user will input the HTML code.  The onKeyUp action of this element is configured to instantly update the contents of the Pseudo Browser, explained in (2) below.  No external action (like button click or tab out is required to render the user-entered HTML in Pseudo Browser)
+
+(2) Pseudo Browser (Constucted using table)
+	Pseudo Browser is a fake browser which will render the output of the user-entered HTML using the browser's rendering engine.
+
+	This, in turn, has the following sub regions.
+	
+		(i) Title Area (TD element)
+			id - IDE_title
+			Description - This is just a table column, styled to look like a title bar.  This is the region where the contents of <title>... </title> area of the user-entered HTML will be rendered.  This will give a feeling of a separate title bar to the user.
+
+		(ii) Result Area (TD element)
+			id - IDE_result
+			Description - This, also, is just a table column.  This is the region where the contents of <body>...</body> area of the user-entered HTML will be rendered.
+
+Some important JavaScript codes in this page are:
+
+(1) IDE_updateResult method
+		Input : User-entered HTML in the text area.
+		Return : Nothing
+		Process	: 
+			(i) If <title> element is present in the user-entered HTML, render it in the title bar of Pseudo Browser.
+			(ii) Render the user-entered HTML in the result area of the Pseudo Browser
+
+(2) Explicit call to IDE_updateResult method
+		Location : Just before the </body> (end of <body> element)
+		Called during : Page Load
+		Purpose : Please note that, some sample HTML is pre-loaded in the text-area when the page loads.  This method call ensures that the output of this sample HTML is rendered in Pseudo Browser during page load.
+
+-->
+
+<!--
+Actual code begins here, huh!!
+-->
+
+<html>
+<head>
+<title>HTML Test Bench</title>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+</head>
+
+<body vlink="#ae0000">
+<script language="JavaScript">
+<!--
+// This function instantly updates the content of pseudo browser.
+function IDE_updateResult (htmlText)
+{
+// check for title tag
+	var titleStart = htmlText.indexOf("<title>");
+	var titleEnd = htmlText.indexOf("</title>");
+	if (titleStart>-1 && titleEnd>-1)
+	{  // if found, include title in the title bar of pseudo browser
+	var pageTitle=htmlText.substring(titleStart+htmlText.indexOf(">",titleStart)+1, titleEnd);
+	document.getElementById("IDE_title").innerHTML = pageTitle + " - <b> Pseudo Browser	";
+	}
+	else
+	{
+	// check for title tag in CAPITAL letters
+	titleStart = htmlText.indexOf("<TITLE>");
+	titleEnd = htmlText.indexOf("</TITLE>");
+		if (titleStart>-1 && titleEnd>-1) 
+		{ // if found, include title in the title bar of pseudo browser
+			var pageTitle=htmlText.substring(titleStart+htmlText.indexOf(">",titleStart)+1, titleEnd);
+			document.getElementById("IDE_title").innerHTML = pageTitle + " - <b> Pseudo Browser	";
+		}
+	}
+	
+	// UPDATE THE pseudo browser's content with entered html
+	document.getElementById("IDE_result").innerHTML = htmlText;
+}
+-->
+</script>
+<table width="100%" border="1" cellpadding="`" cellspacing="0" bordercolor="#000066">
+  <tr> 
+    <td align="left" valign="top"> 
+<!-- This is the area where user types the HTML code.  The onKeyUp action calls the method which updates the result/pseudo-browser -->	
+<textarea name="htmlCode" cols="75" rows="15" wrap="OFF" id="htmlCode"  onKeyUp="IDE_updateResult(this.value);">
+<title>Sample Title</title>
+Type your <b>HTML code</b> here. 
+
+<hr/>
+
+See the <i>results</i> instantly in <b>Pseudo Browser</b>.
+</textarea></td>
+    <td valign="top" bgcolor="#aaaaaa"><font size="4" ><strong><font size="6">HTML Test Bench</font><br/>
+      </strong></font><font face="Georgia, Times New Roman, Times, serif">( 
+      An Open-source Software)</font> 
+      <p><font size="-1" face="Georgia, Times New Roman, Times, serif">A 
+        simple yet powerful learning tool for HTML, designed for <em>interactive</em> 
+        <em>learning</em>.  </p>
+	<p>Teachers can also use this to demonstrate HTML tags. <strong>No saving</strong> of files required. You can 
+        test individual HTML elements without &lt;html&gt;, &lt;body&gt; tags.</font></p>
+      <p><font  size="-1" face="Georgia, Times New Roman, Times, serif">This 
+        is an <strong>offline</strong> tool. <strong>NO INTERNET CONNECTION REQUIRED</strong>. 
+        Save this page into your computer and start working.</font></p>
+      <p><font  size="-1" face="Georgia, Times New Roman, Times, serif">Feel 
+        free to include your changes and re-distribute this. Help Learning!!! 
+        Best viewed in FireFox/Chrome @ 1024x768</font></p>
+      <p><font  size="-1" face="Georgia, Times New Roman, Times, serif">Fork us at <a href="https://github.com/vivganes/html-test-bench" target="_blank">https://github.com/vivganes/html-test-bench</a> </font></p>
+      </td>
+  </tr>
+  <tr valign="top" bgcolor="#0066FF">
+    <td colspan="2"><font color="#FFFFFF" face="Geneva, Arial, Helvetica, sans-serif"><strong><div id="IDE_title" align="center">Pseudo 
+        Browser </div></strong></font></td>
+  </tr>
+  <tr valign="top"> 
+    <td height="350" colspan="2" id="IDE_result">The result appears here :-)</td>
+  </tr>
+</table>
+<script language="JavaScript">
+<!--
+IDE_updateResult(document.getElementById("htmlCode").value);
+-->
+</script>
+</body>
+</html>
+
+<!--
+Short and sweet! Here, we end :)
+-->
